@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Altus
 
-## Getting Started
+A scroll-driven 3D landing page for **ALTUS**, a fictional 61-floor residential tower.
+The tower model stays fixed behind the page while the camera descends from the crown to
+the ground as you scroll, with each section framing the floors it describes.
 
-First, run the development server:
+> ALTUS and Meridian Studio are fictional. All names, places and figures are illustrative.
+> Concept, design and development by Jay Vishnu.
+
+## Highlights
+
+- **Camera that follows the story.** Each section has its own camera shot. Scroll
+  progress is measured per section, and the camera eases between shots and orbits
+  around the tower rather than cutting through it.
+- **Floor highlight.** A gold band on the model tracks the floors the current section
+  is about (crown, residences, club, podium), mirroring the elevation readout on the left.
+- **Elevation rail.** A live floor / altitude / zone indicator driven by the sections'
+  `data-floors` ranges.
+- **Intro loader.** An elevator-style counter descends 61 → G while the model loads,
+  and the page unlocks only once the tower is loaded and framed.
+- **Smooth scroll and reveals.** Lenis smooth scrolling on GSAP's ticker, with
+  ScrollTrigger reveal-on-scroll. Both are disabled for `prefers-reduced-motion`.
+- **Hand-drawn SVG illustrations** for the amenities and the site plan, in the site palette.
+- **Responsive.** The tower is framed to the right of the copy on desktop; a readability
+  scrim keeps text legible over the model on phones.
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack) and React 19
+- [Three.js](https://threejs.org) with [React Three Fiber](https://r3f.docs.pmnd.rs) and [drei](https://drei.docs.pmnd.rs)
+- [GSAP](https://gsap.com) (ScrollTrigger) and [Lenis](https://lenis.darkroom.engineering)
+- [Tailwind CSS v4](https://tailwindcss.com) and TypeScript
+
+## Getting started
+
+Requires Node.js 20.9 or later.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build   # production build
+npm run lint    # ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure
 
-## Learn More
+```
+app/
+  layout.tsx          fonts and metadata
+  page.tsx            scroll handling, Lenis, reveal animations, page layout
+  globals.css         Tailwind theme tokens and base styles
+components/
+  Scene.tsx           R3F canvas, lights, fog, stars
+  Tower.tsx           loads and normalizes public/models/tower.glb
+  CameraRig.tsx       per-section camera waypoints and orbital interpolation
+  FloorHighlight.tsx  gold band that tracks the current section's floors
+  ElevationRail.tsx   live floor / altitude readout
+  Loader.tsx          intro loading screen
+  Illustrations.tsx   SVG amenity vignettes and site plan
+  *Section.tsx        page sections, crown to ground
+  PortfolioFooter.tsx credits
+lib/
+  sectionMeta.ts      single source of truth for sections and floor ranges
+  towerGeometry.ts    tower dimensions and floor → world-height mapping
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set `DEBUG_ORBIT_CONTROLS` in `components/Scene.tsx` to `true` to swap the scroll camera
+for free orbit controls while tuning shots.
