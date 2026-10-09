@@ -23,6 +23,8 @@ const Scene = dynamic(() => import('@/components/Scene'), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 
+const INTRO_MAX_WAIT_MS = 12000;
+
 /**
  * Scroll position expressed in sections: 0 when the hero's top is at the top
  * of the viewport, 1 when the sky section's is, and so on. Fractional values
@@ -93,6 +95,13 @@ export default function Home() {
       ctx.revert();
     };
   }, []);
+
+  // Never trap visitors behind the intro: if the model can't load (no WebGL,
+  // network failure), open the page anyway after a generous wait.
+  useEffect(() => {
+    const fallback = window.setTimeout(handleSceneReady, INTRO_MAX_WAIT_MS);
+    return () => window.clearTimeout(fallback);
+  }, [handleSceneReady]);
 
   useEffect(() => {
     if (!introDone) return;
