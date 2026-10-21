@@ -1,6 +1,6 @@
 # Altus
 
-**Live site: [altus-swart.vercel.app](https://altus-swart.vercel.app/)**
+**Live site: [altus-swart.vercel.app](https://altus-swart.vercel.app/) This is the link for live site**
 
 A scroll-driven 3D landing page for **ALTUS**, a fictional 61-floor residential tower.
 The tower model stays fixed behind the page while the camera descends from the crown to
