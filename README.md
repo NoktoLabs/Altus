@@ -33,7 +33,7 @@ the ground as you scroll, with each section framing the floors it describes.
 - [GSAP](https://gsap.com) (ScrollTrigger) and [Lenis](https://lenis.darkroom.engineering)
 - [Tailwind CSS v4](https://tailwindcss.com) and TypeScript
 
-## Getting started
+## Getting started Babyyyy
 
 Requires Node.js 20.9 or later.
 
